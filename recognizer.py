@@ -1,5 +1,5 @@
 from random import choice
-from numpy import array, dot, random, all
+from numpy import array, dot, random, all, zeros
 
 # Unit step function
 unit_step = lambda x: -1 if x < 0 else 1
@@ -16,7 +16,9 @@ training_data = [
 ]
 
 # Initialize a matrix of weights (7 x 63)
-w = random.rand(7, 63)
+w = zeros((7, 63))
+
+print w
 
 # Learning rate alpha
 alpha = 0.2
@@ -62,12 +64,12 @@ for i in xrange(iterations):
     print '{} {} {} : {}'.format('Converged in', str(count) + ' iterations', 'with weights', w)
     break
 
-# Check if we can successfully classify our data
-for x, _ in training_data:
-  for j in xrange(0, 7):
-    result = dot(x, w[j])
-    print '{}: {} -> {}'.format(j, result, unit_step(result))
-  print '---------------------------'
+# # Check if we can successfully classify our data
+# for x, _ in training_data:
+#   for j in xrange(0, 7):
+#     result = dot(x, w[j])
+#     print '{}: {} -> {}'.format(j, result, unit_step(result))
+#   print '---------------------------'
 
 
 
