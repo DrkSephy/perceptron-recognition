@@ -36,26 +36,29 @@ training_data = [
   (array([-1, +1, +1, +1, +1, +1, -1, +1, -1, -1, -1, -1, -1, +1, +1, -1, -1, -1, -1, -1, +1, +1, -1, -1, -1, -1, -1, -1, +1, -1, -1, -1, -1, -1, -1, +1, -1, -1, +1, +1, +1, +1, +1, -1, -1, +1, -1, -1, +1, +1, -1, -1, -1, -1, -1, +1, -1, +1, +1, +1, +1, +1, -1]), array([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, +1])),
 ]
 
+# Number of output classes
+outputs = 13
+
 # Number of times to train the network and test
 trials = 100
 
 # Noise level
-noise_level = 5
+noise_level = 15
 
 # Results
 classifications = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # Theshold for activation of neuron
-threshold = 0
+threshold = 10
 
 # Activation function
 unit_step = lambda x: -1 if x < threshold else 1
 
 # Initialize a matrix of weights (7 x 63)
-w = zeros((13, 63))
+w = zeros((outputs, 63))
 
 # Initialize bias input vector for outputs
-b = ones(13)
+b = ones(outputs)
 
 # Learning rate alpha
 alpha = 0.2
@@ -80,7 +83,7 @@ for trial in xrange(trials):
     for x, expected in training_data:
 
       # For each output neuron...
-      for j in xrange(0, 13):
+      for j in xrange(0, outputs):
 
         # Compute the total input for the jth output neuron
         result = dot(x, w[j]) + b[j]
@@ -102,6 +105,7 @@ for trial in xrange(trials):
           b[j] += alpha * error
 
     if error_count == 0:
+      print '{} {} {} : {}'.format('Converged in', str(iteration_count) + ' iterations', 'with weights', w)
       break
 
   # Check if we can successfully classify our data
@@ -134,7 +138,7 @@ for trial in xrange(trials):
   # Attempt to classify noisy data
   for x, expected in testing_data:
     predicted = []
-    for j in xrange(0, 13):
+    for j in xrange(0, outputs):
       result = dot(x, w[j]) + b[j]
       predicted.append(unit_step(result))
 
